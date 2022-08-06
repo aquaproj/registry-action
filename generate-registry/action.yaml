@@ -3,7 +3,7 @@ description: Check if pkg.yaml and registry.yaml exist
 runs:
   using: composite
   steps:
-    - run: aqua gr
+    - run: aqua-registry gr
       shell: bash
     - run: git add .
       shell: bash
@@ -11,8 +11,8 @@ runs:
       shell: bash
     - run: |
         if ! git diff --cached --exit-code; then
-          echo "Please run 'aqua gr'" >&2
-          echo "::error file=registry.yaml,title=Please run 'aqua gr'::"
+          echo "Please run 'aqua-registry gr'" >&2
+          echo "::error file=registry.yaml,title=Please run 'aqua-registry gr'::"
           exit 1
         fi
       shell: bash
