@@ -14,7 +14,7 @@ runs:
 
     - run: curl --fail -O -L "https://raw.githubusercontent.com/aquaproj/aqua/${{inputs.ref}}/json-schema/registry.json"
       shell: bash
-    - run: npm install -g ajv-cli
+    - run: npm install --location=global ajv-cli
       shell: bash
     - run: ajv --spec=draft2020 -s registry.json -d registry.yaml
       shell: bash
