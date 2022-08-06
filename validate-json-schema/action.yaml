@@ -1,0 +1,20 @@
+name: Validate registry.yaml with JSON Schema
+description: Validate registry.yaml with JSON Schema
+inputs:
+  ref:
+    description: JSON Schema Ref
+    required: false
+    default: "main"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+
+    - run: curl --fail -O -L "https://raw.githubusercontent.com/aquaproj/aqua/${{inputs.ref}}/json-schema/registry.json"
+      shell: bash
+    - run: npm install -g ajv-cli
+      shell: bash
+    - run: ajv --spec=draft2020 -s registry.json -d registry.yaml
+      shell: bash
