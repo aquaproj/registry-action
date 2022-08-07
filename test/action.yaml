@@ -18,7 +18,7 @@ runs:
       # So we run ci-info via `aqua exec`.
       run: aqua exec -- ci-info run | sed -E "s/^export //" >> "$GITHUB_ENV"
       env:
-        AQUA_CONFIG: aqua/test.yaml
+        AQUA_CONFIG: aqua/ci-info.yaml
 
     - name: Update aqua/test.yaml
       shell: bash
