@@ -11,6 +11,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Remove aqua.yaml to avoid unneeded installation
+      shell: bash
+      run: "rm aqua.yaml || :"
+
     - name: Run ci-info and update environment variables
       shell: bash
       # TODO Run the command without `aqua exec`.
