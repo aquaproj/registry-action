@@ -41,9 +41,9 @@ runs:
       id: go_required
       run: |
         if grep '\- import:' aqua/test.yaml | sed 's|  - import: ../\(.*\)/pkg.yaml|\1/registry.yaml|' | xargs cat | grep "type: go" > /dev/null 2>&1; then
-          echo "::set-output name=value::true"
+          echo "value=true" >> "$GITHUB_OUTPUT"
         else
-          echo "::set-output name=value::false"
+          echo "value=false" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Install Go
