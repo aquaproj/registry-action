@@ -8,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
       with:
         node-version: "16"
 
