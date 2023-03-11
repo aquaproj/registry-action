@@ -4,7 +4,7 @@ GitHub Actions for aqua Registry
 
 ## Reference
 
-https://aquaproj.github.io/docs/reference/create-private-registry
+https://aquaproj.github.io/docs/develop-registry/create-private-registry
 
 ## Actions
 
