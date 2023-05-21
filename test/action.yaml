@@ -30,8 +30,10 @@ runs:
         if grep -E "target:" "$CI_INFO_TEMP_DIR/labels.txt" > /dev/null 2>&1; then
           grep -E "target:" "$CI_INFO_TEMP_DIR/labels.txt" | sed "s|^target:\(.*\)|  - import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
         fi
-        if grep -E "^pkgs/.*\.yaml" < "$CI_INFO_TEMP_DIR/pr_all_filenames.txt" > /dev/null 2>&1; then
-          grep -E "^pkgs/.*\.yaml" < "$CI_INFO_TEMP_DIR/pr_all_filenames.txt" | sed "s/registry\.yaml/pkg.yaml/" | sort -u | sed "s|^|  - import: ../|" >> aqua/test.yaml
+        pkgs=$(mktemp)
+        grep -E "^pkgs/.*\.yaml" < "$CI_INFO_TEMP_DIR/pr_all_filenames.txt" | grep -v -E "^pkgs/crates\.io/" > "$pkgs" || :
+        if [ -s "$pkgs" ]; then
+          sed "s/registry\.yaml/pkg.yaml/" "$pkgs" | sort -u | sed "s|^|  - import: ../|" >> aqua/test.yaml
         fi
         echo "[INFO] aqua/test.yaml" >&2
         cat aqua/test.yaml >&2
