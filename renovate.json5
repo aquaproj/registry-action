@@ -2,7 +2,7 @@
   extends: [
     "config:base",
     "helpers:pinGitHubActionDigests",
-    "github>aquaproj/aqua-renovate-config#2.2.0"
+    "github>aquaproj/aqua-renovate-config#2.2.1"
   ],
   automerge: true,
   platformAutomerge: true,
