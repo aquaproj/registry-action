@@ -31,7 +31,7 @@ runs:
           grep -E "target:" "$CI_INFO_TEMP_DIR/labels.txt" | sed "s|^target:\(.*\)|  - import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
         fi
         pkgs=$(mktemp)
-        grep -E "^pkgs/.*\.yaml" < "$CI_INFO_TEMP_DIR/pr_all_filenames.txt" | grep -v -E "^pkgs/crates\.io/" > "$pkgs" || :
+        grep -E "^pkgs/.*\.yaml" < "$CI_INFO_TEMP_DIR/pr_files.txt" | grep -v -E "^pkgs/crates\.io/" > "$pkgs" || :
         if [ -s "$pkgs" ]; then
           sed "s/registry\.yaml/pkg.yaml/" "$pkgs" | sort -u | sed "s|^|  - import: ../|" >> aqua/test.yaml
         fi
