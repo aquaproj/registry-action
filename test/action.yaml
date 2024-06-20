@@ -7,7 +7,7 @@ inputs:
     required: true
   go_version:
     required: false
-    default: "1.18.5"
+    default: "1.22.0"
 runs:
   using: composite
   steps:
@@ -50,7 +50,7 @@ runs:
 
     - name: Install Go
       if: steps.go_required.outputs.value == 'true'
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v5
       with:
         go-version: ${{ inputs.go_version }}
 
