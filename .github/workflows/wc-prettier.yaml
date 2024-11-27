@@ -1,14 +1,11 @@
 ---
 name: prettier
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: workflow_call
 jobs:
   prettier:
-    timeout-minutes: 30
+    timeout-minutes: 15
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - run: npm i -g prettier
