@@ -27,13 +27,11 @@ runs:
     - name: Update aqua/test.yaml
       shell: bash
       run: |
-        if grep -E "target:" "$CI_INFO_TEMP_DIR/labels.txt" > /dev/null 2>&1; then
-          grep -E "target:" "$CI_INFO_TEMP_DIR/labels.txt" | sed "s|^target:\(.*\)|  - import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
-        fi
-        pkgs=$(mktemp)
-        grep -E "^pkgs/.*\.yaml" < "$CI_INFO_TEMP_DIR/pr_files.txt" | grep -v -E "^pkgs/crates\.io/" > "$pkgs" || :
-        if [ -s "$pkgs" ]; then
-          sed "s/registry\.yaml/pkg.yaml/" "$pkgs" | sort -u | sed "s|^|  - import: ../|" >> aqua/test.yaml
+        set -euo pipefail
+        pkgs=$(bash "$GITHUB_ACTION_PATH"/list_pkgs.sh "$CI_INFO_TEMP_DIR/pr_files.txt" "$CI_INFO_TEMP_DIR/labels.txt")
+        pkgs2=$(echo "$pkgs" | grep -v -E "^pkgs/crates\.io/") || :
+        if [ -n "$pkgs2" ]; then
+          echo "$pkgs2" | sed -E "s|\(.*\)|- import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
         fi
         echo "[INFO] aqua/test.yaml" >&2
         cat aqua/test.yaml >&2
@@ -56,7 +54,7 @@ runs:
 
     - name: Install packages for testing
       shell: bash
-      run: aqua i --test
+      run: aqua i
       env:
         AQUA_GOOS: ${{ inputs.goos }}
         AQUA_GOARCH: ${{ inputs.goarch }}
