@@ -29,6 +29,7 @@ runs:
       run: |
         set -euo pipefail
         pkgs=$(bash "$GITHUB_ACTION_PATH"/list_pkgs.sh "$CI_INFO_TEMP_DIR/pr_files.txt" "$CI_INFO_TEMP_DIR/labels.txt")
+        bash "$GITHUB_ACTION_PATH/output_summary.sh" "$pkgs" >> "$GITHUB_STEP_SUMMARY"
         pkgs2=$(echo "$pkgs" | grep -v -E "^pkgs/crates\.io/") || :
         if [ -n "$pkgs2" ]; then
           echo "$pkgs2" | sed -E "s|\(.*\)|- import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
