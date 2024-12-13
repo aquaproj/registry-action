@@ -34,7 +34,7 @@ runs:
         fi
         pkgs2=$(echo "$pkgs" | grep -v -E "^pkgs/crates\.io/") || :
         if [ -n "$pkgs2" ]; then
-          echo "$pkgs2" | sed -E "s|\(.*\)|- import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
+          echo "$pkgs2" | sed -E "s|(.*)|- import: ../pkgs/\1/pkg.yaml|" >> aqua/test.yaml
         fi
         echo "[INFO] aqua/test.yaml" >&2
         cat aqua/test.yaml >&2
