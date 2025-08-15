@@ -7,7 +7,7 @@ inputs:
     required: true
   go_version:
     required: false
-    default: "1.23.3"
+    default: "1.25.0"
 runs:
   using: composite
   steps:
@@ -47,12 +47,32 @@ runs:
         else
           echo "value=false" >> "$GITHUB_OUTPUT"
         fi
+    - name: Check if rust is required
+      shell: bash
+      id: rust
+      run: |
+        if grep '\- import:' aqua/test.yaml | sed 's|  - import: ../\(.*\)/pkg.yaml|\1/registry.yaml|' | xargs cat | grep "type: cargo" > /dev/null 2>&1; then
+          echo "required=true" >> "$GITHUB_OUTPUT"
+          if rustup -V; then
+            echo "has_rustup=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_rustup=false" >> "$GITHUB_OUTPUT"
+          fi
+        else
+          echo "required=false" >> "$GITHUB_OUTPUT"
+        fi
 
     - name: Install Go
       if: steps.go_required.outputs.value == 'true'
       uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed # v5.1.0
       with:
         go-version: ${{ inputs.go_version }}
+
+    - name: Update Rust
+      if: steps.rust.outputs.required == 'true' && steps.rust.outputs.has_rustup == 'true'
+      shell: bash
+      run: |
+        rustup update
 
     - name: Install packages for testing
       shell: bash
