@@ -16,5 +16,5 @@ runs:
       shell: bash
     - run: npm install --location=global ajv-cli
       shell: bash
-    - run: ajv --spec=draft2020 -s registry.json -d registry.yaml
+    - run: ajv --spec=draft2020 -c ajv-formats -s registry.json -d registry.yaml
       shell: bash
